@@ -1,0 +1,206 @@
+<!-- Contacto -->
+<div class="row" #target>
+  <div class="col-md-6 mb-4">
+    <h1>CONTACTO</h1>
+
+    <form
+      name="FormContact"
+      [formGroup]="FormContact"
+    >
+      <fieldset>
+        <!--campo nombre-->
+        <div class="form-group row p-2">
+          <label class="col-form-label col-sm-3" for="Name">
+            Nombre <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Name"
+              [ngClass]="{
+                'is-invalid':
+                  (FormContact.controls['Name'].touched || submitted) &&
+                  FormContact.controls['Name'].errors
+              }"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormContact.controls['Name'].touched || submitted) &&
+                FormContact.controls['Name'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+            <div
+              class="text-danger"
+              *ngIf="
+                FormContact.controls['Name'].hasError('minlength') ||
+                FormContact.controls['Name'].hasError('maxlength')
+              "
+            >
+              Dato texto, 4 a 55 caracteres.
+            </div>
+          </div>
+        </div>
+
+        <!--campo email-->
+        <div class="form-group row p-2">
+          <label class="col-form-label col-sm-3" for="Email">
+            Email <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Email"
+              [ngClass]="{
+                'is-invalid':
+                  (FormContact.controls['Email'].touched || submitted) &&
+                  FormContact.controls['Email'].errors
+              }"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormContact.controls['Email'].touched || submitted) &&
+                FormContact.controls['Email'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+            <div
+              class="text-danger"
+              *ngIf="
+                FormContact.controls['Email'].hasError('pattern')
+              "
+            >
+              Dato email.
+            </div>
+          </div>
+        </div>
+
+        <!--campo asunto-->
+        <div class="form-group row p-2">
+          <label class="col-form-label col-sm-3" for="Affair">
+            Asunto <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-8">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="Affair"
+              [ngClass]="{
+                'is-invalid':
+                  (FormContact.controls['Affair'].touched || submitted) &&
+                  FormContact.controls['Affair'].errors
+              }"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormContact.controls['Affair'].touched || submitted) &&
+                FormContact.controls['Affair'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+            <div
+              class="text-danger"
+              *ngIf="
+                FormContact.controls['Affair'].hasError('minlength') ||
+                FormContact.controls['Affair'].hasError('maxlength')
+              "
+            >
+              Dato texto, 4 a 55 caracteres.
+            </div>
+          </div>
+        </div>
+
+        <!--campo mensaje-->
+        <div class="form-group row p-2">
+          <label class="col-form-label col-sm-3" for="Message">
+            Mensaje <span class="text-danger">*</span>
+          </label>
+          <div class="col-sm-8">
+            <textarea
+              type="text"
+              class="form-control"
+              formControlName="Message"
+              [ngClass]="{
+                'is-invalid':
+                  (FormContact.controls['Message'].touched || submitted) &&
+                  FormContact.controls['Message'].errors
+              }"
+            ></textarea>
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormContact.controls['Message'].touched || submitted) &&
+                FormContact.controls['Message'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+            <div
+              class="text-danger"
+              *ngIf="
+                FormContact.controls['Message'].hasError('minlength') ||
+                FormContact.controls['Message'].hasError('maxlength')
+              "
+            >
+              Dato texto, 4 a 400 caracteres.
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Boton Enviar' -->
+      <div class="p-1">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Enviar()"
+        >
+          Enviar
+        </button>
+      </div>
+
+      <!--texto: Revisar los datos ingresados...-->
+      <div
+        id="divMsjFormRegistro"
+        class="row alert alert-danger"
+        *ngIf="submitted && FormContact.invalid"
+      >
+        <i class="fa fa-exclamation-sign"></i>{{ Messages['RD'] }}
+      </div>
+    </form>
+  </div>
+
+  <div class="col-md-6">
+    <h1>DÍAS Y HORARIOS DE ATENCIÓN</h1>
+    <div class="row p-2">
+      <label class="p-2"><i class="fa-regular fa-clock"></i> Martes a Sábados de 9 a 20hs.</label>
+      <label class="p-2"><i class="fa-solid fa-phone"></i> +54 9 000 112233</label>
+      <label class="p-2"><i class="fa-regular fa-envelope"></i> ejemplo@gmail.com</label>
+      <label class="p-2"><i class="fa-solid fa-location-dot"></i> Córdoba, Argentina</label>
+    </div>
+    <div class="container-fluid">
+      <a class="networks" href="https://www.facebook.com" style="background-color:#2962ff" target="_blank" title="Facebook">
+        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+        <span class="sr-only">Facebook</span>
+      </a>
+      <a class="networks" href="https://twitter.com" style="background-color:#5ba4d6" target="_blank" title="Twitter">
+        <i class="fab fa-twitter" aria-hidden="true"></i>
+        <span class="sr-only">Twitter</span></a>
+      <a class="networks" href="https://www.instagram.com" style="background-color:#ec4c51" target="_blank" title="Instagram">
+        <i class="fab fa-instagram" aria-hidden="true"></i>
+        <span class="sr-only">Instagram</span></a>
+      <a class="networks" href="https://www.whatsapp.com" style="background-color:#00e676" target="_blank" title="Whatsapp">
+        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+        <span class="sr-only">Whatsapp</span>
+      </a>
+    </div>
+  </div>
+</div>

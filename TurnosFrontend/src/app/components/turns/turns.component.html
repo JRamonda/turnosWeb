@@ -1,0 +1,301 @@
+<div>
+  <div class="row shadow-sm p-3 mb-5 bg-white rounded">
+    <div class="row text-center">
+      <h1>Calendario de turnos peluqueria</h1>
+      <div class="col-md-7 mt-4">
+        <div class="shadow p-3 mb-5 bg-white rounded container">
+          <div class="header-calendar">
+            <div>
+              <button (click)="changeMonth(-1)" class="btn-prev">Antes</button>
+            </div>
+            <h1>{{dateSelect | date:'MMMM, yyyy'}}</h1>
+            <div>
+              <button (click)="changeMonth(1)" class="btn-next">Siguiente</button>
+            </div>
+          </div>
+          <ol>
+            <label *ngFor="let day of week" class="day-name">{{day | slice:0:3}}</label>
+        
+            <li [id]="i" (click)="clickDay(day); toggleSelected(i)" [style.gridColumnStart]="first ? day?.indexWeek : 'auto'"
+              *ngFor="let day of monthSelect;let first = first; let i = index">
+              <span>{{day?.value}}</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      
+      <div class="col-md-5">
+        Fecha: {{dateValue | date}}
+        <div class="row" *ngFor="let turn of Turns">
+          <button class="col-3 border" [ngClass]="{'free': turn.state == undefined, 'ocupated': turn.state == true}"
+           (click)="Selected(turn)" [disabled]="turn.state" *ngIf="(turn.date | date: 'dd/MM/yyyy') == (dateValue | date: 'dd/MM/yyyy')"> 
+            {{HourSystem(turn.startTime)}}
+         </button>
+        </div> 
+      </div>
+    </div>
+
+    <!-- Cliente -->
+    <div class="col-md-8" #target>
+      <div class="row">
+        <h1>Guardar turno {{dateValue | date}} {{selectedTurn}}</h1>
+
+        <form
+          name="FormRegister"
+          [formGroup]="FormRegister"
+        >
+          <fieldset>
+            <!--campo nombre-->
+            <div class="form-group row p-2">
+              <label class="col-form-label col-sm-3" for="FirstName">
+                Nombre <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="FirstName"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['FirstName'].touched || submitted) &&
+                      FormRegister.controls['FirstName'].errors
+                  }"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['FirstName'].touched || submitted) &&
+                    FormRegister.controls['FirstName'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    FormRegister.controls['FirstName'].hasError('minlength') ||
+                    FormRegister.controls['FirstName'].hasError('maxlength')
+                  "
+                >
+                  Dato texto, 4 a 55 caracteres.
+                </div>
+              </div>
+            </div>
+
+            <!--campo apellido-->
+            <div class="form-group row p-2">
+              <label class="col-form-label col-sm-3" for="LastName">
+                Apellido <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="LastName"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['LastName'].touched || submitted) &&
+                      FormRegister.controls['LastName'].errors
+                  }"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['LastName'].touched || submitted) &&
+                    FormRegister.controls['LastName'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    FormRegister.controls['LastName'].hasError('minlength') ||
+                    FormRegister.controls['LastName'].hasError('maxlength')
+                  "
+                >
+                  Dato texto, 4 a 55 caracteres.
+                </div>
+              </div>
+            </div>
+
+            <!--campo nrodoc-->
+            <div class="form-group row p-2">
+              <label class="col-form-label col-sm-3" for="NumDoc">
+                Nro Doc <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="NumDoc"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['NumDoc'].touched || submitted) &&
+                      FormRegister.controls['NumDoc'].errors
+                  }"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['NumDoc'].touched || submitted) &&
+                    FormRegister.controls['NumDoc'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    FormRegister.controls['NumDoc'].hasError('minlength') ||
+                    FormRegister.controls['NumDoc'].hasError('maxlength')
+                  "
+                >
+                  Dato texto, 4 a 55 caracteres.
+                </div>
+              </div>
+            </div>
+
+            <!--campo idtipodoc-->
+            <div class="form-group row p-2">
+              <label
+                class="col-form-label col-sm-3"
+                for="IdTypeDoc"
+              >
+                Tipo Doc <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8">
+                <select
+                  name="IdTypeDoc"
+                  class="form-select"
+                  formControlName="IdTypeDoc"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['IdTypeDoc'].touched ||
+                        submitted) &&
+                      FormRegister.controls['IdTypeDoc'].errors
+                  }"
+                >
+                  <option
+                    *ngFor="let opt of TypeDocs"
+                    [ngValue]="opt.id"
+                  >
+                    ‌{{ opt.name }}
+                  </option>
+                </select>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['IdTypeDoc'].touched || submitted) &&
+                    FormRegister.controls['IdTypeDoc'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+              </div>
+            </div>
+
+            <!--campo nrotelefono-->
+            <div class="form-group row p-2">
+              <label class="col-form-label col-sm-3" for="NumPhone">
+                Telefono <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="NumPhone"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['NumPhone'].touched || submitted) &&
+                      FormRegister.controls['NumPhone'].errors
+                  }"
+                />
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['NumPhone'].touched || submitted) &&
+                    FormRegister.controls['NumPhone'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    FormRegister.controls['NumPhone'].hasError('minlength') ||
+                    FormRegister.controls['NumPhone'].hasError('maxlength')
+                  "
+                >
+                  Dato texto, 4 a 55 caracteres.
+                </div>
+              </div>
+            </div>
+            
+            <!--campo idservicio-->
+            <div class="form-group row p-2">
+              <label
+                class="col-form-label col-sm-3"
+                for="IdService"
+              >
+                Servicio <span class="text-danger">*</span>
+              </label>
+              <div class="col-sm-8 content-select">
+                <select
+                  name="IdTypeDoc"
+                  class="form-select"
+                  formControlName="IdService"
+                  [ngClass]="{
+                    'is-invalid':
+                      (FormRegister.controls['IdService'].touched ||
+                        submitted) &&
+                      FormRegister.controls['IdService'].errors
+                  }"
+                >
+                  <option
+                    *ngFor="let opt of Services"
+                    [ngValue]="opt.id"
+                  >
+                    ‌{{ opt.name }}
+                  </option>
+                </select>
+                <div
+                  class="text-danger"
+                  *ngIf="
+                    (FormRegister.controls['IdService'].touched || submitted) &&
+                    FormRegister.controls['IdService'].hasError('required')
+                  "
+                >
+                  Dato requerido.
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Boton Guardar' -->
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            (click)="Save()"
+          >
+            Guardar
+          </button>
+
+          <!--texto: Revisar los datos ingresados...-->
+          <div
+            id="divMsjFormRegistro"
+            class="row alert alert-danger"
+            *ngIf="submitted && FormRegister.invalid"
+          >
+            <i class="fa fa-exclamation-sign"></i>{{ Messages['RD'] }}
+          </div>
+        </form>
+
+        <div class="mt-5">
+          <h5>Tienes un problema?</h5>
+          <label><i>Contactanos con nosotros haciendo click&nbsp;</i></label>
+          <a class="link-secondary" routerLink="/contacto" ng-reflect-router-link="/contacto" href="/contacto" title="Contactos">aquí</a>
+        </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="row" #target>
+  <div class="col-md-12 mb-4">
+    <h1>Buscar turno</h1>
+    <!-- Formulario Filtro de búsqueda, se ve cuando la AccionABMC es "L"(busqueda/listado)-->
+    <form
+      name="FormSearch"
+      [formGroup]="FormSearch"
+      class="bg-light"
+    >
+      <div class="form-group row">
+        <!--campo nrodoc-->
+          <label class="col-form-label col-md-2 offset-md-1" for="NumDoc">
+            Nro Doc <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-3">
+            <input
+              type="text"
+              class="form-control"
+              formControlName="NumDoc"
+              [ngClass]="{
+                'is-invalid':
+                  (FormSearch.controls['NumDoc'].touched || submitted) &&
+                  FormSearch.controls['NumDoc'].errors
+              }"
+            />
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormSearch.controls['NumDoc'].touched || submitted) &&
+                FormSearch.controls['NumDoc'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+          </div>
+        <!--campo idtipodoc-->
+          <label
+            class="col-form-label col-md-2 offset-md-1"
+            for="IdTypeDoc"
+          >
+            Tipo Doc <span class="text-danger">*</span>
+          </label>
+          <div class="col-md-3">
+            <select
+              name="IdTypeDoc"
+              class="form-select"
+              formControlName="IdTypeDoc"
+              [ngClass]="{
+                'is-invalid':
+                  (FormSearch.controls['IdTypeDoc'].touched ||
+                    submitted) &&
+                    FormSearch.controls['IdTypeDoc'].errors
+              }"
+            >
+              <option
+                *ngFor="let opt of TypeDocs"
+                [ngValue]="opt.id"
+              >
+                ‌{{ opt.name }}
+              </option>
+            </select>
+            <div
+              class="text-danger"
+              *ngIf="
+                (FormSearch.controls['IdTypeDoc'].touched || submitted) &&
+                FormSearch.controls['IdTypeDoc'].hasError('required')
+              "
+            >
+              Dato requerido.
+            </div>
+          </div>
+        </div>
+      <!-- Botones -->
+      <div class="row justify-content-center">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="Search()"
+        >
+          <i class="fa fa-search"> </i> Buscar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Tabla de resutados de busqueda y Paginador-->
+  <div
+    id="divTablaResultados"
+    *ngIf="AccionABMC == 'L' && Items != null && Items.length > 0"
+  >
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th class="text-center">Fecha</th>
+          <th class="text-center">Desde</th>
+          <th class="text-center">Hasta</th>
+          <th class="text-center">Servicio</th>
+          <th class="text-center">Peluquero</th>
+          <th class="text-center text-nowrap">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of Items">
+          <td>{{ item.turn.date | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ item.turn.startTime | slice:0:5 }}</td>
+          <td>{{ item.turn.endTime | slice:0:5 }}</td>
+          <td>{{ item.service.name }}</td>
+          <td>{{ item.user.firstName }} {{ item.user.lastName }}</td>
+          <td class="text-center text-nowrap">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              title="Modificar"
+              (click)="Modify(item)"
+            >
+              <i class="fa fa-pencil"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary"
+              title="Eliminar"
+              (click)="Delete(item)"
+            >
+            <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!--No se encontraron registros-->
+  <div
+    id="divMsjFormBusqueda"
+    class="alert alert-info"
+    *ngIf="AccionABMC == 'L' && Items != null && Items.length == 0"
+  >
+    <i class="fa fa-exclamation-sign"></i>{{ Mensajes['SD'] }}
+  <!-- texto: No se encontraron registros -->
+  </div>
+</div>
